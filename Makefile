@@ -21,6 +21,8 @@ FILES =	ft_select.c		\
 		parse_args.c	\
 		utils.c			\
 		utils2.c		\
+		functions.c		\
+		functions2.c	\
 		params.c
 
 OBJECT =	$(patsubst %.c,%.o,$(FILES))

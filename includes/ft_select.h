@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sh1.h                                           :+:      :+:    :+:   */
+/*   ft_select.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ade-bonn <ade-bonn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/01/23 11:55:51 by ade-bonn          #+#    #+#             */
-/*   Updated: 2015/02/06 14:17:34 by ade-bonn         ###   ########.fr       */
+/*   Created: 2015/02/18 02:14:06 by achazal           #+#    #+#             */
+/*   Updated: 2015/02/18 02:14:08 by achazal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_SH1_H
-# define FT_SH1_H
+#ifndef FT_SELECT_H
+# define FT_SELECT_H
 # include <sys/param.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -80,7 +80,14 @@ void				*ft_memalloc(size_t size);
 int					ft_putc(int c);
 t_params			*ft_get_params(void);
 void				ft_bzero(void *s, size_t n);
+char				*ft_strjoin(char *s1, char *s2);
+char				*ft_strjoinf1(char **s1, char *s2);
+char				*ft_strjoinf2(char *s1, char **s2);
+
+void				ft_putselect(t_env *e);
+void				ft_delete(t_env *e, char *inputs);
+void				ft_arrows(t_env *e, char *inputs);
+void				ft_select(t_env *e, char *inputs);
+void				ft_enter(t_env *e, char *inputs);
 
 #endif
-
-

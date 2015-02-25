@@ -1,5 +1,5 @@
 /* ************************************************************************** */
-/*			                                                               */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_select.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -26,9 +26,8 @@ void		*ft_memalloc(size_t size)
 	if (!size || !(memory = (void *)malloc(size)))
 		return (NULL);
 	explorer = (char *)memory;
-	if (memory != NULL)
-		while (size--)
-	*explorer++ = 0;
+	while (size--)
+		*explorer++ = 0;
 	return (memory);
 }
 

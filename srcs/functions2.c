@@ -11,26 +11,46 @@
 /* ************************************************************************** */
 
 #include "../includes/ft_select.h"
+#include <stdlib.h>
 
-t_params		*ft_get_params(void)
+void		ft_do_delete(t_env *e)
 {
-	t_params	*p;
+	t_str	*tmp;
 
-	if (!(p = (t_params *)ft_memalloc(sizeof(t_params))))
-		return (NULL);
-	p->c_pos_x = 0;
-	p->c_pos_y = 0;
-	p->print = 0;
-	if (tgetent(p->buf, p->v_term) < 1)
-		return (NULL);
-	tcgetattr(0, &p->term);
-	p->term.c_lflag &= ~(ICANON);
-	p->term.c_lflag &= ~(ECHO);
-	p->term.c_cc[VMIN] = 1;
-	p->term.c_cc[VTIME] = 0;
-	if (tcsetattr(0, TCSADRAIN, &p->term) == -1)
-		return (NULL);
-	p->max_size = 1;
-	p->col_count = 1;
-	return (p);
+	if (e->ptr->past && e->ptr->next)
+	{
+		tmp = e->ptr->past;
+		(e->ptr->past)->next = e->ptr->next;
+		(e->ptr->next)->past = e->ptr->past;
+	}
+	else if (e->ptr->past)
+	{
+		tmp = e->ptr->past;
+		tmp->next = NULL;
+	}
+	else
+	{
+		tmp = e->ptr->next;
+		tmp->past = NULL;
+		e->lst = tmp;
+	}
+	tmp->flags |= 0b00000001;
+	free(e->ptr);
+	e->ptr = tmp;
+}
+
+void		ft_delete(t_env *e, char *inputs)
+{
+	if (!(inputs[0] == 127 && inputs[1] == 0 && inputs[2] == 0 &&
+		inputs[3] == 0 && inputs[5] == 0 && inputs[5] == 0) &&
+		!(inputs[0] == 27 && inputs[1] == 91 && inputs[2] == 51 &&
+		inputs[3] == 126 && inputs[5] == 0 && inputs[5] == 0))
+		return ;
+	e->put = 1;
+	if (!(e->ptr->past || e->ptr->next))
+	{
+		tputs(tgetstr("ve", (char **)(&e->p->buf)), 1, ft_putc);
+		exit (0);
+	}
+	ft_do_delete(e);
 }
