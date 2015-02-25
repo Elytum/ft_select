@@ -12,6 +12,9 @@
 
 #include "../includes/ft_select.h"
 #include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
 
 void		ft_do_delete(t_env *e)
 {
@@ -19,7 +22,7 @@ void		ft_do_delete(t_env *e)
 
 	if (e->ptr->past && e->ptr->next)
 	{
-		tmp = e->ptr->past;
+		tmp = e->ptr->next;
 		(e->ptr->past)->next = e->ptr->next;
 		(e->ptr->next)->past = e->ptr->past;
 	}
@@ -35,6 +38,7 @@ void		ft_do_delete(t_env *e)
 		e->lst = tmp;
 	}
 	tmp->flags |= 0b00000001;
+	free(e->ptr->str);
 	free(e->ptr);
 	e->ptr = tmp;
 }
@@ -49,8 +53,9 @@ void		ft_delete(t_env *e, char *inputs)
 	e->put = 1;
 	if (!(e->ptr->past || e->ptr->next))
 	{
-		tputs(tgetstr("ve", (char **)(&e->p->buf)), 1, ft_putc);
-		exit (0);
+		write(sing_tty(), tgetstr("ve", NULL), 12);
+		close(sing_tty());
+		exit(0);
 	}
 	ft_do_delete(e);
 }

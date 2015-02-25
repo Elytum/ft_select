@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/ft_select.h"
+#include <stdlib.h>
 
 t_params		*ft_get_params(void)
 {

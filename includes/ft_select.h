@@ -17,6 +17,8 @@
 # include <termcap.h>
 # include <curses.h>
 
+# define TERM_BUF 4000
+
 typedef struct		s_params
 {
 	char			**av;
@@ -56,6 +58,7 @@ typedef struct		s_env
 	t_str			*lst;
 	t_str			*ptr;
 	t_int			*histo;
+	int				tty;
 	int				width;
 	int				height;
 	int				maxx;
@@ -83,5 +86,8 @@ void				ft_select(t_env *e, char *inputs);
 void				ft_enter(t_env *e, char *inputs);
 
 void				ft_init_signals(t_env *e);
+
+
+int					sing_tty(void);
 
 #endif

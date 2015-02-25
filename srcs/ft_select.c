@@ -13,6 +13,7 @@
 #include "../includes/ft_select.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 static int	ft_pushback(t_str **head, char *str)
 {
@@ -60,21 +61,48 @@ void		ft_putlststr(t_str *head)
 void		ft_loop(t_env *e)
 {
 	char	inputs[6];
+	// int		fd;
+	// char	*str;
 
+	// fd = open("/dev/tty", O_RDWR);
+	// str = tgetstr("vi", NULL);
+	write(e->tty, tgetstr("vi", NULL), 6);//write(fd, str, ft_strlen(str));
+	// close(fd);
 	ft_putselect(e);
 	ft_bzero(inputs, 6);
 	e->put = 0;
-	tputs(tgetstr("vi", (char **)(&e->p->buf)), 1, ft_putc);
 	while ((read(0, inputs, 6)) != EOF)
 	{
 		ft_delete(e, inputs);
 		ft_arrows(e, inputs);
 		ft_select(e, inputs);
 		ft_enter(e, inputs);
-		if (e->put == 1 && !(e->put = 0))
+		// if (e->put == 1 && !(e->put = 0))
 			ft_putselect(e);
 		ft_bzero(inputs, 6);
-		usleep(40000);
+	}
+}
+
+void		init_term(void)
+{
+	int		sucess;
+	char	*termbuf;
+	char	*term;
+
+	termbuf = (char *)malloc(sizeof(char*) * TERM_BUF);
+	term = getenv("TERM");
+	if (term == NULL)
+	{
+		write(2, "Specify a terminal with 'setenv TERM'\n", 38);
+		exit(0);
+	}
+	if ((sucess = tgetent(termbuf, term)) <= 0)
+	{
+		if (sucess < 0)
+			write(2, "Can't access to termcaps database\n", 34);
+		if (sucess == 0)
+			write(2, "Terminal Type not defined\n", 26);
+		exit(0);
 	}
 }
 
@@ -83,6 +111,7 @@ t_env		*ft_init(int ac, char **av)
 	t_env	*e;
 	int		w;
 
+	init_term();
 	if (!ac || !av || !*av || !*(++av))
 		return (NULL);
 	if (!(e = (t_env *)malloc(sizeof(t_env))))
@@ -102,6 +131,8 @@ t_env		*ft_init(int ac, char **av)
 	e->ptr = e->lst;
 	e->p = ft_get_params();
 	e->lst->flags |= 0b00000001;
+	// e->tty = open("/dev/tty", O_RDWR);
+	// sing_tty(void)
 	return (e);
 }
 

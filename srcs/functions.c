@@ -12,6 +12,9 @@
 
 #include "../includes/ft_select.h"
 #include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
 
 void		ft_enter(t_env *e, char *inputs)
 {
@@ -21,8 +24,9 @@ void		ft_enter(t_env *e, char *inputs)
 	if (!(inputs[0] == 10 && inputs[1] == 0 && inputs[2] == 0 &&
 		inputs[3] == 0 && inputs[4] == 0 && inputs[5] == 0))
 		return ;
-	tputs(tgoto(tgetstr("cm", (char **)(&e->p->buf)), 0, 0), 1, ft_putc);
-	tputs(tgetstr("cd", (char **)(&e->p->buf)), 1, ft_putc);
+	write(sing_tty(), tgoto(tgetstr("cm", NULL), 0, 0), ft_strlen(tgoto(tgetstr("cm", NULL), 0, 0)));
+	write(sing_tty(), tgetstr("cd", NULL), 3);
+	write(sing_tty(), tgetstr("ve", NULL), 12);
 	buffer = NULL;
 	ptr = e->lst;
 	while (ptr)
@@ -36,9 +40,9 @@ void		ft_enter(t_env *e, char *inputs)
 		ptr = ptr->next;
 	}
 	buffer = ft_strjoinf1(&buffer, "\n");
-	buffer = ft_strjoinf1(&buffer, tgetstr("ve", (char **)(&e->p->buf)));
-	tputs(buffer, 1, ft_putc);
+	write(sing_tty(), buffer, ft_strlen(buffer));
 	free(buffer);
+	close(sing_tty());
 	exit(0);
 }
 
@@ -52,6 +56,12 @@ void		ft_select(t_env *e, char *inputs)
 		e->ptr->flags &= ~0b00000010;
 	else
 		e->ptr->flags |= 0b00000010;
+	e->ptr->flags &= ~0b00000001;
+	if (e->ptr->next)
+		e->ptr = e->ptr->next;
+	else
+		e->ptr = e->lst;
+	e->ptr->flags |= 0b00000001;
 }
 
 void		ft_arrows(t_env *e, char *inputs)
@@ -88,22 +98,22 @@ void		ft_putselect(t_env *e)
 	t_str	*pos;
 	char	*b;
 
-	b = ft_strdup(tgoto(tgetstr("cm", (char **)(&e->p->buf)), 0, 0));
-	b = ft_strjoinf1(&b, tgetstr("cd", (char **)(&e->p->buf)));
+	b = ft_strdup(tgoto(tgetstr("cm", NULL), 0, 0));
+	b = ft_strjoinf1(&b, tgetstr("cd", NULL));
 	pos = e->lst;
 	while (pos)
 	{
 		if (pos->flags & 0b00000001)
-			b = ft_strjoinf1(&b, tgetstr("us", (char **)(&e->p->buf)));
+			b = ft_strjoinf1(&b, tgetstr("us", NULL));
 		if (pos->flags & 0b00000010)
-			b = ft_strjoinf1(&b, tgetstr("mr", (char **)(&e->p->buf)));
+			b = ft_strjoinf1(&b, tgetstr("mr", NULL));
 		b = ft_strjoinf1(&b, pos->str);
 		b = ft_strjoinf1(&b, "\n");
-		b = ft_strjoinf1(&b, tgetstr("me", (char **)(&e->p->buf)));
+		b = ft_strjoinf1(&b, tgetstr("me", NULL));
 		pos = pos->next;
 	}
 	b = ft_strjoinf1(&b, tgoto(tgetstr("cm", \
-						(char **)(&e->p->buf)), e->x, e->y));
-	tputs(b, 1, ft_putc);
+						NULL), e->x, e->y));
+	write(sing_tty(), b, ft_strlen(b));
 	free(b);
 }
