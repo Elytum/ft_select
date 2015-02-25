@@ -13,6 +13,17 @@
 #include "../includes/ft_select.h"
 #include <stdlib.h>
 
+
+struct termios		*sing_oldterm(struct termios *term)
+{
+	static struct termios	*old;
+
+	if (term != NULL)
+		old = term;
+	return (old);
+}
+
+
 t_params		*ft_get_params(void)
 {
 	t_params	*p;
@@ -29,6 +40,8 @@ t_params		*ft_get_params(void)
 	p->term.c_lflag &= ~(ECHO);
 	p->term.c_cc[VMIN] = 1;
 	p->term.c_cc[VTIME] = 0;
+	tcgetattr(0, p->oldterm);
+	sing_oldterm(p->oldterm);
 	if (tcsetattr(0, TCSADRAIN, &p->term) == -1)
 		return (NULL);
 	p->max_size = 1;

@@ -95,8 +95,6 @@ void		ft_arrows(t_env *e, char *inputs)
 	}
 	e->ptr->flags |= 0b00000001;
 }
-#include <unistd.h>
-#include <stdio.h>
 
 void		ft_put_col(t_env *e)
 {

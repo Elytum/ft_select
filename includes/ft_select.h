@@ -26,6 +26,7 @@ typedef struct		s_params
 	char			*v_term;
 	char			buf[2048];
 	struct termios	term;
+	struct termios	*oldterm;
 	char			r_char[4];
 	int				print;
 	tcflag_t		old_term;
@@ -88,7 +89,7 @@ void				ft_echap(t_env *e, char *inputs);
 
 void				ft_init_signals(t_env *e);
 
-
+struct termios		*sing_oldterm(struct termios *term);
 int					sing_tty(void);
 
 #endif
