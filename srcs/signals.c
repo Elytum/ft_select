@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
-
+#include <sys/ioctl.h>
 #include <stdio.h>
 
 t_env		*ft_get_env(t_env **e)
@@ -25,7 +25,6 @@ t_env		*ft_get_env(t_env **e)
 		save = *e;
 	return (save);
 }
- #include <sys/ioctl.h>
 void		ft_update_max(int sig_num)
 {
 	t_env	*e;
@@ -45,12 +44,13 @@ void		ft_update_max(int sig_num)
 
 void		ft_ctrl_c(int sig_num)
 {
+	struct termios *p;
 	write(sing_tty(), tgoto(tgetstr("cm", NULL), 0, 0), ft_strlen(tgoto(tgetstr("cm", NULL), 0, 0)));
 	write(sing_tty(), tgetstr("cd", NULL), 3);
 	write(sing_tty(), tgetstr("ve", NULL), 12);
-	// str = tgetstr("me", NULL);
-	// write(sing_tty(), str, ft_strlen(str));
 	close(sing_tty());
+	p = sing_oldterm(NULL);
+	tcsetattr(0, 0, p);
 	exit(sig_num);
 }
 
