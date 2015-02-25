@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "../includes/ft_select.h"
+#include <stdlib.h>
 
 void					ft_bzero(void *s, size_t n)
 {

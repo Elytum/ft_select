@@ -12,20 +12,10 @@
 
 #ifndef FT_SELECT_H
 # define FT_SELECT_H
-# include <sys/param.h>
-# include <sys/types.h>
-# include <sys/wait.h>
 # include <signal.h>
-# include <pwd.h>
 # include <termios.h>
 # include <termcap.h>
-# include <signal.h>
 # include <curses.h>
-# include <term.h>
-# include <errno.h>
-# include <curses.h>
-
-# include <stdio.h>
 
 typedef struct		s_params
 {

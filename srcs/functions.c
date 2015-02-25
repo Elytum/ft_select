@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/ft_select.h"
-#include <unistd.h>
 #include <stdlib.h>
 
 void		ft_enter(t_env *e, char *inputs)

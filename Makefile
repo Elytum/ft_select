@@ -18,7 +18,6 @@ NAME = ft_select
 
 #--------------Sources----------------------#
 FILES =	ft_select.c		\
-		parse_args.c	\
 		utils.c			\
 		utils2.c		\
 		functions.c		\
