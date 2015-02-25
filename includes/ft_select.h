@@ -81,7 +81,8 @@ char				*ft_strjoinf2(char *s1, char **s2);
 
 void				ft_putselect(t_env *e);
 void				ft_delete(t_env *e, char *inputs);
-void				ft_arrows(t_env *e, char *inputs);
+void				ft_up_down(t_env *e, char *inputs);
+void				ft_left_right(t_env *e, char *inputs);
 void				ft_select(t_env *e, char *inputs);
 void				ft_enter(t_env *e, char *inputs);
 void				ft_echap(t_env *e, char *inputs);

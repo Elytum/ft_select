@@ -22,6 +22,7 @@ FILES =	ft_select.c		\
 		utils2.c		\
 		functions.c		\
 		functions2.c	\
+		functions3.c	\
 		params.c		\
 		signals.c
 

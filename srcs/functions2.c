@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <stdio.h>
 
 void		ft_do_delete(t_env *e)
 {

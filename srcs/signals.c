@@ -62,9 +62,13 @@ int					sing_tty(void)
 		fd = open("/dev/tty", O_WRONLY);
 	return (fd);
 }
-
-void				ft_signal(void)
+void		ft_init_signals(t_env *e)
 {
+	e->height = tgetnum ("li");
+	e->width = tgetnum ("co");
+	// ft_signal();
+	signal(SIGWINCH, &ft_update_max);
+	signal(SIGINT, &ft_ctrl_c);
 	signal(SIGINT, &ft_ctrl_c);
 	signal(SIGHUP, &ft_ctrl_c);
 	signal(SIGTERM, &ft_ctrl_c);
@@ -78,27 +82,4 @@ void				ft_signal(void)
 	signal(SIGABRT, &ft_ctrl_c);
 	signal(SIGUSR1, &ft_ctrl_c);
 	signal(SIGUSR2, &ft_ctrl_c);
-}
-
-void		ft_init_signals(t_env *e)
-{
-// `	static void		se_sigredim(void)
-// {
-	// struct winsize		win;
-	// t_select			*tmp;
-
-	// ioctl(0, TIOCGWINSZ, &win);
-	// tmp = sing_select(NULL);
-	// e->width = (int)win.ws_row;
-	// e->height = (int)win.ws_col;
-	// tputs(tmp->cl_str, 1, tputs_putchar);
-	// se_print_list(tmp);
-// }
-
-	ft_get_env(&e);
-	e->height = tgetnum ("li");
-	e->width = tgetnum ("co");
-	ft_signal();
-	signal (SIGWINCH, &ft_update_max);
-	signal (SIGINT, &ft_ctrl_c);
 }

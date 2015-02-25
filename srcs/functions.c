@@ -67,7 +67,7 @@ void		ft_select(t_env *e, char *inputs)
 	e->ptr->flags |= 0b00000001;
 }
 
-void		ft_arrows(t_env *e, char *inputs)
+void		ft_up_down(t_env *e, char *inputs)
 {
 	if (!((inputs[0] == 27 && inputs[1] == 91) && (inputs[2] == 65 ||
 		inputs[2] == 66) && inputs[3] == 0 && inputs[4] == 0 &&

@@ -74,7 +74,8 @@ void		ft_loop(t_env *e)
 	while ((read(0, inputs, 6)) != EOF)
 	{
 		ft_delete(e, inputs);
-		ft_arrows(e, inputs);
+		ft_up_down(e, inputs);
+		ft_left_right(e, inputs);
 		ft_select(e, inputs);
 		ft_enter(e, inputs);
 		ft_echap(e, inputs);
