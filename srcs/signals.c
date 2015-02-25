@@ -33,17 +33,13 @@ void		ft_update_max(int sig_num)
 	// t_select			*tmp;
 
 	e = ft_get_env(NULL);
-	dprintf(1, "Past height = %i, Past width = %i\n", e->height, e->width);
-	// e->height = tgetnum ("li");
-	// e->width = tgetnum ("co");
-
+	// dprintf(1, "Past height = %i, Past width = %i\n", e->height, e->width);
 	ioctl(0, TIOCGWINSZ, &win);
-	// tmp = sing_select(NULL);
-	e->width = (int)win.ws_row;
-	e->height = (int)win.ws_col;
-	// tputs(tmp->cl_str, 1, tputs_putchar);
-	// se_print_list(tmp);
-	dprintf(sing_tty(), "New height = %i, new width = %i\n", e->width, e->height);
+	e->width = (int)win.ws_col;
+	e->height = (int)win.ws_row;
+	write(sing_tty(), tgetstr("cl", NULL), ft_strlen(tgetstr("cl", NULL)));
+	ft_putselect(e);
+	// dprintf(sing_tty(), "New height = %i, new width = %i\n", e->width, e->height);
 	(void)sig_num;
 }
 
@@ -72,23 +68,22 @@ int					sing_tty(void)
 	return (fd);
 }
 
-// void				ft_signal(void)
-// {
-// 	signal(SIGINT, &ft_select);
-// 	signal(SIGHUP, &ft_select);
-// 	signal(SIGTERM, &ft_select);
-// 	signal(SIGSTOP, &ft_select);
-// 	signal(SIGCONT, &ft_select2);
-// 	signal(SIGSEGV, &ft_select);
-// 	signal(SIGQUIT, &ft_select);
-// 	signal(SIGFPE, &ft_select);
-// 	signal(SIGALRM, &ft_select);
-// 	signal(SIGKILL, &ft_select);
-// 	signal(SIGABRT, &ft_select);
-// 	signal(SIGUSR1, &ft_select);
-// 	signal(SIGUSR2, &ft_select);
-// 	signal(SIGWINCH, &ft_select3);
-// }
+void				ft_signal(void)
+{
+	signal(SIGINT, &ft_ctrl_c);
+	signal(SIGHUP, &ft_ctrl_c);
+	signal(SIGTERM, &ft_ctrl_c);
+	signal(SIGSTOP, &ft_ctrl_c);
+	signal(SIGCONT, &ft_ctrl_c);
+	signal(SIGSEGV, &ft_ctrl_c);
+	signal(SIGQUIT, &ft_ctrl_c);
+	signal(SIGFPE, &ft_ctrl_c);
+	signal(SIGALRM, &ft_ctrl_c);
+	signal(SIGKILL, &ft_ctrl_c);
+	signal(SIGABRT, &ft_ctrl_c);
+	signal(SIGUSR1, &ft_ctrl_c);
+	signal(SIGUSR2, &ft_ctrl_c);
+}
 
 void		ft_init_signals(t_env *e)
 {
@@ -108,6 +103,7 @@ void		ft_init_signals(t_env *e)
 	ft_get_env(&e);
 	e->height = tgetnum ("li");
 	e->width = tgetnum ("co");
-	signal (SIGWINCH, ft_update_max);
-	signal (SIGINT, ft_ctrl_c);
+	ft_signal();
+	signal (SIGWINCH, &ft_update_max);
+	signal (SIGINT, &ft_ctrl_c);
 }
