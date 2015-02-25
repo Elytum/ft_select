@@ -116,9 +116,6 @@ void		ft_put_col(t_env *e)
 		ptr = ptr->next;
 	}
 	max += 2;
-	// dprintf(1, "Dimensions are : x : %i, needed lines : %i\n", max, (e->width / max) * e->height);
-	// usleep(10000);
-	// write(sing_tty(), "COUCOU\n", 7);
 	write(sing_tty(), tgoto(tgetstr("cm", NULL), 0, 0), ft_strlen(tgoto(tgetstr("cm", NULL), 0, 0)));
 	write(sing_tty(), tgetstr("cd", NULL), ft_strlen(tgetstr("cd", NULL)));
 	if ((e->width / max) * e->height < e->maxy)

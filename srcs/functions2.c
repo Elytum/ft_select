@@ -59,3 +59,13 @@ void		ft_delete(t_env *e, char *inputs)
 	}
 	ft_do_delete(e);
 }
+
+void		ft_echap(t_env *e, char *inputs)
+{
+	if (!(inputs[0] == 27 && inputs[1] == 0 && inputs[2] == 0))
+		return ;
+	write(sing_tty(), tgetstr("ve", NULL), 12);
+	close(sing_tty());
+	(void)e;
+	exit (0);
+}

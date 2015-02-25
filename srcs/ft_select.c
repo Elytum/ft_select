@@ -77,6 +77,7 @@ void		ft_loop(t_env *e)
 		ft_arrows(e, inputs);
 		ft_select(e, inputs);
 		ft_enter(e, inputs);
+		ft_echap(e, inputs);
 		// if (e->put == 1 && !(e->put = 0))
 			ft_putselect(e);
 		ft_bzero(inputs, 6);
