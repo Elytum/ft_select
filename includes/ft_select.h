@@ -58,6 +58,8 @@ typedef struct		s_env
 	t_int			*histo;
 	int				width;
 	int				height;
+	int				maxx;
+	int				maxy;
 	int				x;
 	int				y;
 	int				put;
@@ -79,5 +81,7 @@ void				ft_delete(t_env *e, char *inputs);
 void				ft_arrows(t_env *e, char *inputs);
 void				ft_select(t_env *e, char *inputs);
 void				ft_enter(t_env *e, char *inputs);
+
+void				ft_init_signals(t_env *e);
 
 #endif

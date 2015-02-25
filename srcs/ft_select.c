@@ -78,31 +78,40 @@ void		ft_loop(t_env *e)
 	}
 }
 
-int			main(int ac, char **av)
+t_env		*ft_init(int ac, char **av)
 {
 	t_env	*e;
 	int		w;
 
-	if (!av || !*av || !*(++av))
-		return (-1);
+	if (!ac || !av || !*av || !*(++av))
+		return (NULL);
 	if (!(e = (t_env *)malloc(sizeof(t_env))))
-		return (-1);
+		return (NULL);
 	e->lst = NULL;
-	e->height = 0;
-	e->width = 0;
+	e->maxy = 0;
+	e->maxx = 0;
 	e->x = 0;
 	e->y = 0;
-	while (*av && ++e->height)
+	while (*av && ++e->maxy)
 	{
 		if (!(w = ft_pushback(&(e->lst), *av++)))
-			return (-1);
-		if (w > e->width)
-			e->width = w;
+			return (NULL);
+		if (w > e->maxx)
+			e->maxx = w;
 	}
 	e->ptr = e->lst;
 	e->p = ft_get_params();
 	e->lst->flags |= 0b00000001;
+	return (e);
+}
+
+int			main(int ac, char **av)
+{
+	t_env	*e;
+
+	if (!(e = ft_init(ac, av)))
+		return (-1);
+	ft_init_signals(e);
 	ft_loop(e);
 	return (0);
-	(void)ac;
 }

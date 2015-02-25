@@ -22,7 +22,8 @@ FILES =	ft_select.c		\
 		utils2.c		\
 		functions.c		\
 		functions2.c	\
-		params.c
+		params.c		\
+		signals.c
 
 OBJECT =	$(patsubst %.c,%.o,$(FILES))
 BASEDIR = srcs
