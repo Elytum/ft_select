@@ -45,18 +45,13 @@ void		ft_update_max(int sig_num)
 
 void		ft_ctrl_c(int sig_num)
 {
-	char	*str;
-	t_env	*e;
-
-	e = ft_get_env(NULL);
-
-	str = tgetstr("ve", NULL);
-	write(sing_tty(), str, ft_strlen(str));
-	str = tgetstr("me", NULL);
-	write(sing_tty(), str, ft_strlen(str));
+	write(sing_tty(), tgoto(tgetstr("cm", NULL), 0, 0), ft_strlen(tgoto(tgetstr("cm", NULL), 0, 0)));
+	write(sing_tty(), tgetstr("cd", NULL), 3);
+	write(sing_tty(), tgetstr("ve", NULL), 12);
+	// str = tgetstr("me", NULL);
+	// write(sing_tty(), str, ft_strlen(str));
 	close(sing_tty());
-	(void)sig_num;
-	exit (0);
+	exit(sig_num);
 }
 
 int					sing_tty(void)

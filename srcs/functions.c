@@ -39,9 +39,12 @@ void		ft_enter(t_env *e, char *inputs)
 		}
 		ptr = ptr->next;
 	}
-	buffer = ft_strjoinf1(&buffer, "\n");
-	write(sing_tty(), buffer, ft_strlen(buffer));
-	free(buffer);
+	if (buffer)
+	{
+		buffer = ft_strjoinf1(&buffer, "\n");
+		write(sing_tty(), buffer, ft_strlen(buffer));
+		free(buffer);
+	}
 	close(sing_tty());
 	exit(0);
 }
@@ -136,7 +139,7 @@ void		ft_put_col(t_env *e)
 		write(sing_tty(), ptr->str, ft_strlen(ptr->str));
 		write(sing_tty(), tgetstr("me", NULL), ft_strlen(tgetstr("me", NULL)));
 		y++;
-		if (y > e->height)
+		if (y >= e->height)
 		{
 			y = 0;
 			x++;
@@ -152,7 +155,7 @@ void		ft_putselect(t_env *e)
 
 	if (e->width <= e->maxx)
 	{
-		write(sing_tty(), "nop", 3);
+		write(sing_tty(), "Screen size too little\n", 24);
 		return ;
 	}
 	if (e->height <= e->maxy)
