@@ -15,55 +15,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <sys/ioctl.h>
 
-/*
-void		ft_put_col(t_env *e)
-{
-	t_str	*ptr;
-	int		max;
-	int		v;
-	int 	x;
-	int		y;
-
-	max = 0;
-	ptr = e->lst;
-	while (ptr)
-	{
-		v = ft_strlen(ptr->str);
-		if (max < v)
-			max = v;
-		ptr = ptr->next;
-	}
-	max += 2;
-	write(sing_tty(), tgoto(tgetstr("cm", NULL), 0, 0), ft_strlen(tgoto(tgetstr("cm", NULL), 0, 0)));
-	write(sing_tty(), tgetstr("cd", NULL), ft_strlen(tgetstr("cd", NULL)));
-	if ((e->width / max) * e->height < e->maxy)
-	{
-		write (sing_tty(), "Screen size too little\n", 24);
-		return ;
-	}
-	y = 0;
-	x = 0;
-	ptr = e->lst;
-	while (ptr)
-	{
-		write(sing_tty(), tgoto(tgetstr("cm", NULL), x * max, y) , ft_strlen(tgoto(tgetstr("cm", NULL), x * max, y)));
-		if (ptr->flags & 0b00000001)
-			write(sing_tty(), tgetstr("us", NULL), ft_strlen(tgetstr("us", NULL)));
-		if (ptr->flags & 0b00000010)
-			write(sing_tty(), tgetstr("mr", NULL), ft_strlen(tgetstr("mr", NULL)));
-		write(sing_tty(), ptr->str, ft_strlen(ptr->str));
-		write(sing_tty(), tgetstr("me", NULL), ft_strlen(tgetstr("me", NULL)));
-		y++;
-		if (y >= e->height)
-		{
-			y = 0;
-			x++;
-		}
-		ptr = ptr->next;
-	}
-}
-*/
 void			ft_setposition(t_env *e, int x, int y)
 {
 	int			pos;
@@ -71,20 +24,28 @@ void			ft_setposition(t_env *e, int x, int y)
 	t_str		*ptr;
 
 	maxcol = e->maxy / e->height + (e->maxy % e->height > 0);
-	ptr = e->lst;
 	if (e->height >= e->maxy)
 		return ;
-	if (x < 0)
+	while (x <= 0)
 		x += maxcol;
-	pos = x * y;
-	if (pos > e->height)
-		pos = 0;
-	while (pos)
-//		pos++;
-		//Quand ptr est set
-	ptr->flags |= 0b00000001;
-
-
+	while (x >= maxcol)
+		x -= maxcol;
+	if (x == maxcol - 1 && y >= e->maxy % e->height)
+		x--;
+	pos = (e->height * x + y);
+	ptr = e->lst;
+	while (ptr && pos)
+	{
+		pos--;
+		ptr = ptr->next;
+	}
+	if (!pos && !(ptr->flags & 0b00000001))
+	{
+		ptr->flags |= 0b00000001;
+		e->ptr = ptr;
+	}
+	else
+		ft_setposition(e, 0, y);
 }
 
 void			ft_left_right(t_env *e, char *inputs)
@@ -114,7 +75,9 @@ void			ft_left_right(t_env *e, char *inputs)
 			else
 				ft_setposition(e, x + 1, y);
 			ptr->flags &= ~0b00000001;
+			return ;
 		}
+		y++;
 		if (y >= e->height)
 		{
 			y = 0;

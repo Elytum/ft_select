@@ -67,6 +67,7 @@ typedef struct		s_env
 	int				x;
 	int				y;
 	int				put;
+	size_t			sizeofcol;
 }					t_env;
 
 void				ft_putstr(char *str);

@@ -42,7 +42,8 @@ void		ft_enter(t_env *e, char *inputs)
 	if (buffer)
 	{
 		buffer = ft_strjoinf1(&buffer, "\n");
-		write(sing_tty(), buffer, ft_strlen(buffer));
+		// write(sing_tty(), buffer, ft_strlen(buffer));
+		write(1, buffer, ft_strlen(buffer));
 		free(buffer);
 	}
 	close(sing_tty());
