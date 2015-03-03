@@ -13,20 +13,18 @@
 #include "../includes/ft_select.h"
 #include <stdlib.h>
 
-
-struct termios		*sing_oldterm(struct termios *term)
+BYPASS					*sing_oldterm(BYPASS *term)
 {
-	static struct termios	*old;
+	static BYPASS	*old;
 
 	if (term != NULL)
 		old = term;
 	return (old);
 }
 
-
-t_params		*ft_get_params(void)
+t_params				*ft_get_params(void)
 {
-	t_params	*p;
+	t_params			*p;
 
 	if (!(p = (t_params *)ft_memalloc(sizeof(t_params))))
 		return (NULL);

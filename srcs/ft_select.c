@@ -15,11 +15,11 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-static int	ft_pushback(t_str **head, char *str)
+static int		ft_pushback(t_str **head, char *str)
 {
-	t_str	*tmp;
-	t_str	*ptr;
-	char	*p;
+	t_str		*tmp;
+	t_str		*ptr;
+	char		*p;
 
 	if (!head || !str || !(tmp = (t_str *)malloc(sizeof(t_str))) ||
 		!(tmp->str = ft_strdup(str)))
@@ -43,31 +43,11 @@ static int	ft_pushback(t_str **head, char *str)
 	return (p - str);
 }
 
-void		ft_putlststr(t_str *head)
+static void		ft_loop(t_env *e)
 {
-	t_str	*ptr;
+	char		inputs[6];
 
-	ptr = head;
-	write(1, "{ ", 2);
-	while (ptr)
-	{
-		ft_putstr(ptr->str);
-		ptr = ptr->next;
-		ft_putstr((ptr) ? ", " : " ");
-	}
-	write(1, "}\n", 2);
-}
-
-void		ft_loop(t_env *e)
-{
-	char	inputs[6];
-	// int		fd;
-	// char	*str;
-
-	// fd = open("/dev/tty", O_RDWR);
-	// str = tgetstr("vi", NULL);
-	write(e->tty, tgetstr("vi", NULL), 6);//write(fd, str, ft_strlen(str));
-	// close(fd);
+	write(e->tty, tgetstr("vi", NULL), 6);
 	ft_putselect(e);
 	ft_bzero(inputs, 6);
 	e->put = 0;
@@ -79,17 +59,21 @@ void		ft_loop(t_env *e)
 		ft_select(e, inputs);
 		ft_enter(e, inputs);
 		ft_echap(e, inputs);
-		// if (e->put == 1 && !(e->put = 0))
-			ft_putselect(e);
+		ft_reset(e, inputs);
+		ft_reverse(e, inputs);
+		ft_all(e, inputs);
+		ft_home(e, inputs);
+		ft_end(e, inputs);
+		ft_putselect(e);
 		ft_bzero(inputs, 6);
 	}
 }
 
-void		init_term(void)
+static void		init_term(void)
 {
-	int		sucess;
-	char	*termbuf;
-	char	*term;
+	int			sucess;
+	char		*termbuf;
+	char		*term;
 
 	termbuf = (char *)malloc(sizeof(char*) * TERM_BUF);
 	term = getenv("TERM");
@@ -108,10 +92,10 @@ void		init_term(void)
 	}
 }
 
-t_env		*ft_init(int ac, char **av)
+static t_env	*ft_init(int ac, char **av)
 {
-	t_env	*e;
-	int		w;
+	t_env		*e;
+	int			w;
 
 	init_term();
 	if (!ac || !av || !*av || !*(++av))
@@ -133,14 +117,12 @@ t_env		*ft_init(int ac, char **av)
 	e->ptr = e->lst;
 	e->p = ft_get_params();
 	e->lst->flags |= 0b00000001;
-	// e->tty = open("/dev/tty", O_RDWR);
-	// sing_tty(void)
 	return (e);
 }
 
-int			main(int ac, char **av)
+int				main(int ac, char **av)
 {
-	t_env	*e;
+	t_env		*e;
 
 	if (!(e = ft_init(ac, av)))
 		return (-1);

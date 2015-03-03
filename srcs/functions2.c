@@ -11,60 +11,89 @@
 /* ************************************************************************** */
 
 #include "../includes/ft_select.h"
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
 
-void		ft_do_delete(t_env *e)
+void		ft_reset(t_env *e, char *inputs)
 {
-	t_str	*tmp;
+	t_str	*ptr;
 
-	if (e->ptr->past && e->ptr->next)
+	if (!((inputs[0] == 'r' && inputs[1] == 0) &&
+		(inputs[2] == 0)))
+		return ;
+	ptr = e->lst;
+	while (ptr)
 	{
-		tmp = e->ptr->next;
-		(e->ptr->past)->next = e->ptr->next;
-		(e->ptr->next)->past = e->ptr->past;
+		ptr->flags &= ~0b00000001;
+		ptr->flags &= ~0b00000010;
+		ptr = ptr->next;
 	}
-	else if (e->ptr->past)
-	{
-		tmp = e->ptr->past;
-		tmp->next = NULL;
-	}
-	else
-	{
-		tmp = e->ptr->next;
-		tmp->past = NULL;
-		e->lst = tmp;
-	}
-	tmp->flags |= 0b00000001;
-	free(e->ptr->str);
-	free(e->ptr);
-	e->ptr = tmp;
+	e->lst->flags |= 0b00000001;
+	e->ptr = e->lst;
 }
 
-void		ft_delete(t_env *e, char *inputs)
+void		ft_reverse(t_env *e, char *inputs)
 {
-	if (!(inputs[0] == 127 && inputs[1] == 0 && inputs[2] == 0 &&
-		inputs[3] == 0 && inputs[5] == 0 && inputs[5] == 0) &&
-		!(inputs[0] == 27 && inputs[1] == 91 && inputs[2] == 51 &&
-		inputs[3] == 126 && inputs[5] == 0 && inputs[5] == 0))
+	t_str	*ptr;
+
+	if (!((inputs[0] == 'i' && inputs[1] == 0) &&
+		(inputs[2] == 0)))
 		return ;
-	e->put = 1;
-	if (!(e->ptr->past || e->ptr->next))
+	ptr = e->lst;
+	while (ptr)
 	{
-		write(sing_tty(), tgetstr("ve", NULL), 12);
-		close(sing_tty());
-		exit(0);
+		if (ptr->flags & 0b00000010)
+			ptr->flags &= ~0b00000010;
+		else
+			ptr->flags |= 0b00000010;
+		ptr = ptr->next;
 	}
-	ft_do_delete(e);
 }
 
-void		ft_echap(t_env *e, char *inputs)
+void		ft_all(t_env *e, char *inputs)
 {
-	if (!(inputs[0] == 27 && inputs[1] == 0 && inputs[2] == 0))
+	t_str	*ptr;
+	char	done;
+
+	done = 0;
+	if (!((inputs[0] == 'a' && inputs[1] == 0) &&
+		(inputs[2] == 0)))
 		return ;
-	write(sing_tty(), tgetstr("ve", NULL), 12);
-	close(sing_tty());
-	(void)e;
-	exit (0);
+	ptr = e->lst;
+	while (ptr)
+	{
+		if (!(ptr->flags & 0b00000010))
+		{
+			ptr->flags |= 0b00000010;
+			done = 1;
+		}
+		ptr = ptr->next;
+	}
+	if (done)
+		return ;
+	ptr = e->lst;
+	while (ptr)
+	{
+		ptr->flags &= ~0b00000010;
+		ptr = ptr->next;
+	}
+}
+
+void		ft_home(t_env *e, char *inputs)
+{
+	if (!(inputs[0] == 27 && inputs[1] == 91 && inputs[2] == 72 &&
+		inputs[3] == 0 && inputs[4] == 0 && inputs[5] == 0))
+		return ;
+	e->ptr->flags &= ~0b00000001;
+	e->ptr = e->lst;
+	e->ptr->flags |= 0b00000001;
+}
+
+void		ft_end(t_env *e, char *inputs)
+{
+	if (!(inputs[0] == 27 && inputs[1] == 91 && inputs[2] == 70 &&
+		inputs[3] == 0 && inputs[4] == 0 && inputs[5] == 0))
+		return ;
+	e->ptr->flags &= ~0b00000001;
+	while (e->ptr->next)
+		e->ptr = e->ptr->next;
+	e->ptr->flags |= 0b00000001;
 }

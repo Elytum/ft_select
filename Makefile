@@ -23,10 +23,11 @@ FILES =	ft_select.c		\
 		functions.c		\
 		functions2.c	\
 		functions3.c	\
+		functions4.c	\
 		params.c		\
 		signals.c
 
-OBJECT =	$(patsubst %.c,%.o,$(FILES))
+OBJECT = $(patsubst %.c,%.o,$(FILES))
 BASEDIR = srcs
 
 CURRENT_DIR = $(shell pwd)/$(NAME)

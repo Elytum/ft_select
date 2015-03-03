@@ -12,6 +12,7 @@
 
 #include "../includes/ft_select.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 void					ft_bzero(void *s, size_t n)
 {
@@ -65,4 +66,19 @@ char					*ft_strjoinf2(char *s1, char **s2)
 	free(*s2);
 	s2 = NULL;
 	return (tmp);
+}
+
+void					ft_putlststr(t_str *head)
+{
+	t_str				*ptr;
+
+	ptr = head;
+	write(1, "{ ", 2);
+	while (ptr)
+	{
+		ft_putstr(ptr->str);
+		ptr = ptr->next;
+		ft_putstr((ptr) ? ", " : " ");
+	}
+	write(1, "}\n", 2);
 }
