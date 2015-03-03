@@ -66,6 +66,7 @@ void		ft_init_signals(t_env *e)
 {
 	e->height = tgetnum ("li");
 	e->width = tgetnum ("co");
+	ft_get_env(&e);
 	// ft_signal();
 	signal(SIGWINCH, &ft_update_max);
 	signal(SIGINT, &ft_ctrl_c);

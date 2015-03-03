@@ -12,7 +12,7 @@
 
 # -------------Compilateur------------------#
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes -g
+CFLAGS = -Wall -Werror -Wextra -I./includes
 #--------------Name-------------------------#
 NAME = ft_select
 
