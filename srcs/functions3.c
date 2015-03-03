@@ -21,18 +21,18 @@ void			ft_setposition(t_env *e, int x, int y)
 {
 	int			pos;
 	int			maxcol;
+	int			tmpx;
 	t_str		*ptr;
 
+	tmpx = x;
 	maxcol = e->maxy / e->height + (e->maxy % e->height > 0);
-	if (e->height >= e->maxy)
-		return ;
-	while (x <= 0)
-		x += maxcol;
-	while (x >= maxcol)
-		x -= maxcol;
-	if (x == maxcol - 1 && y >= e->maxy % e->height)
-		x--;
-	pos = (e->height * x + y);
+	while (tmpx <= 0)
+		tmpx += maxcol;
+	while (tmpx >= maxcol)
+		tmpx -= maxcol;
+	if (tmpx == maxcol - 1 && y >= e->maxy % e->height)
+		tmpx = (x == -1) ? tmpx - 1 : 0;
+	pos = (e->height * tmpx + y);
 	ptr = e->lst;
 	while (ptr && pos)
 	{
@@ -44,25 +44,16 @@ void			ft_setposition(t_env *e, int x, int y)
 		ptr->flags |= 0b00000001;
 		e->ptr = ptr;
 	}
-	else
-		ft_setposition(e, 0, y);
 }
 
 void			ft_left_right(t_env *e, char *inputs)
 {
 	t_str		*ptr;
-	// int			max;
-	// int			v;
 	int			x;
 	int			y;
 
-	// dprintf(sing_tty(), "%i %i %i\n", inputs[0], inputs[1], inputs[2]);
-//	sleep(2);
 	if (!((inputs[0] == 27 && inputs[1] == 91) && (inputs[2] == 67 || inputs[2] == 68)))
 		return ;
-	// left 68
-	// right 67
-
 	x = 0;
 	y = 0;
 	ptr = e->lst;
@@ -70,21 +61,15 @@ void			ft_left_right(t_env *e, char *inputs)
 	{
 		if (ptr->flags & 0b00000001)
 		{
+			ptr->flags &= ~0b00000001;
 			if (inputs[2] == 68)
 				ft_setposition(e, x - 1, y);
 			else
 				ft_setposition(e, x + 1, y);
-			ptr->flags &= ~0b00000001;
 			return ;
 		}
-		y++;
-		if (y >= e->height)
-		{
+		if (++y >= e->height && ++x)
 			y = 0;
-			x++;
-		}
 		ptr = ptr->next;
 	}
-	// dprintf(sing_tty(), "%i %i %i\n", inputs[0], inputs[1], inputs[2]);
-	// sleep(2);
 }
