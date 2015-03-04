@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void		ft_enter2(t_env *e, char *buffer)
+static void	ft_enter2(t_env *e, char *buffer)
 {
 	t_str	*ptr;
 

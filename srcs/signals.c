@@ -26,7 +26,7 @@ t_env					*ft_get_env(t_env **e)
 	return (save);
 }
 
-void					ft_update_max(int sig_num)
+static void				ft_update_max(int sig_num)
 {
 	t_env				*e;
 	struct winsize		win;
@@ -40,7 +40,7 @@ void					ft_update_max(int sig_num)
 	(void)sig_num;
 }
 
-void					ft_ctrl_c(int sig_num)
+static void				ft_ctrl_c(int sig_num)
 {
 	struct termios		*p;
 
