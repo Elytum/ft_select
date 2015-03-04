@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <stdio.h>
 
 static void	ft_enter2(t_env *e, char *buffer)
 {

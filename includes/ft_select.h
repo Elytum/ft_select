@@ -12,7 +12,6 @@
 
 #ifndef FT_SELECT_H
 # define FT_SELECT_H
-# include <signal.h>
 # include <termios.h>
 # include <termcap.h>
 # include <curses.h>
