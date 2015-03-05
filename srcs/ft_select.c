@@ -43,7 +43,7 @@ static int		ft_pushback(t_str **head, char *str)
 	return (p - str);
 }
 
-static void		ft_loop(t_env *e)
+void			ft_loop(t_env *e)
 {
 	char		inputs[6];
 

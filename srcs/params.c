@@ -12,14 +12,42 @@
 
 #include "../includes/ft_select.h"
 #include <stdlib.h>
+#include <fcntl.h>
+
+t_env					*ft_get_env(t_env **e)
+{
+	static				t_env *save = NULL;
+
+	if (e)
+		save = *e;
+	return (save);
+}
+
+int						sing_tty(void)
+{
+	static int			fd = -1;
+
+	if (fd == -1)
+		fd = open("/dev/tty", O_WRONLY);
+	return (fd);
+}
 
 BYPASS					*sing_oldterm(BYPASS *term)
 {
-	static BYPASS	*old;
+	static BYPASS		*old;
 
 	if (term != NULL)
 		old = term;
 	return (old);
+}
+
+BYPASS					*sing_newterm(BYPASS *term)
+{
+	static BYPASS			*new;
+
+	if (term != NULL)
+		new = term;
+	return (new);
 }
 
 t_params				*ft_get_params(void)
@@ -44,5 +72,6 @@ t_params				*ft_get_params(void)
 		return (NULL);
 	p->max_size = 1;
 	p->col_count = 1;
+	sing_newterm(&(p->term));
 	return (p);
 }

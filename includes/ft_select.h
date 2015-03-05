@@ -93,7 +93,10 @@ void					ft_all(t_env *e, char *inputs);
 void					ft_home(t_env *e, char *inputs);
 void					ft_end(t_env *e, char *inputs);
 void					ft_init_signals(t_env *e);
-BYPASS					*sing_oldterm(struct termios *term);
+BYPASS					*sing_oldterm(BYPASS *term);
 int						sing_tty(void);
+BYPASS					*sing_newterm(BYPASS *term);
+void					ft_loop(t_env *e);
+t_env					*ft_get_env(t_env **e);
 
 #endif
