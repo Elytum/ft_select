@@ -51,16 +51,19 @@ void					h_sigpause(int sig_num)
 	BYPASS				*t;
 	char				*str;
 
+	sing_tty(1);
 	str = tgoto(tgetstr("cm", NULL), 0, 0);
 	write(sing_tty(0), str, ft_strlen(str));
-	write(sing_tty(0), tgetstr("cd", NULL), 3);
+	str = tgetstr("cd", NULL);
+	write(sing_tty(0), str, ft_strlen(str));
+	str = tgetstr("ve", NULL);
+	write(sing_tty(0), str, ft_strlen(str));
+	close(sing_tty(0));
+	tcsetattr(0, 0, sing_oldterm(NULL));
+	signal(SIGTSTP, SIG_DFL);
 	t = sing_newterm(NULL);
 	get_out[0] = t->c_cc[VSUSP];
 	get_out[1] = '\0';
-	write(sing_tty(0), tgetstr("ve", NULL), 12);
-	tcsetattr(0, 0, sing_oldterm(NULL));
-	close(sing_tty(0));
-	signal(SIGTSTP, SIG_DFL);
 	ioctl(1, TIOCSTI, get_out);
 	(void)sig_num;
 }
