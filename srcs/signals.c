@@ -45,10 +45,10 @@ static void				ft_ctrl_c(int sig_num)
 	(void)sig_num;
 }
 
-void				h_sigstop(int sig_num)
+void					h_sigpause(int sig_num)
 {
-	char			get_out[2];
-	BYPASS			*t;
+	char				get_out[2];
+	BYPASS				*t;
 	char				*str;
 
 	str = tgoto(tgetstr("cm", NULL), 0, 0);
@@ -67,7 +67,7 @@ void				h_sigstop(int sig_num)
 
 static void				h_sigcont(int sig_num)
 {
-	signal(SIGTSTP, &h_sigstop);
+	signal(SIGTSTP, &h_sigpause);
 	tcsetattr(0, 0, sing_newterm(NULL));
 	sing_tty(1);
 	write(1, tgetstr("vi", NULL), 6);
@@ -85,11 +85,8 @@ void					ft_init_signals(t_env *e)
 	signal(SIGINT, &ft_ctrl_c);
 	signal(SIGHUP, &ft_ctrl_c);
 	signal(SIGTERM, &ft_ctrl_c);
-
-	signal(SIGTSTP, &h_sigstop);
-	// signal(SIGSTOP, &h_sigstop);
+	signal(SIGTSTP, &h_sigpause);
 	signal(SIGCONT, &h_sigcont);
-
 	signal(SIGSEGV, &ft_ctrl_c);
 	signal(SIGQUIT, &ft_ctrl_c);
 	signal(SIGFPE, &ft_ctrl_c);
