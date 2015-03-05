@@ -111,8 +111,8 @@ void			ft_delete(t_env *e, char *inputs)
 	e->put = 1;
 	if (!(e->ptr->past || e->ptr->next))
 	{
-		write(sing_tty(), tgetstr("ve", NULL), 12);
-		close(sing_tty());
+		write(sing_tty(0), tgetstr("ve", NULL), 12);
+		close(sing_tty(0));
 		exit(0);
 	}
 	ft_do_delete(e);
@@ -122,8 +122,8 @@ void			ft_echap(t_env *e, char *inputs)
 {
 	if (!(inputs[0] == 27 && inputs[1] == 0 && inputs[2] == 0))
 		return ;
-	write(sing_tty(), tgetstr("ve", NULL), 12);
-	close(sing_tty());
+	write(sing_tty(0), tgetstr("ve", NULL), 12);
+	close(sing_tty(0));
 	(void)e;
 	exit (0);
 }

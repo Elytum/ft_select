@@ -36,7 +36,7 @@ static void	ft_enter2(t_env *e, char *buffer)
 		write(1, buffer, ft_strlen(buffer));
 		free(buffer);
 	}
-	close(sing_tty());
+	close(sing_tty(0));
 	exit(0);
 }
 
@@ -45,10 +45,10 @@ void		ft_enter(t_env *e, char *inputs)
 	if (!(inputs[0] == 10 && inputs[1] == 0 && inputs[2] == 0 &&
 		inputs[3] == 0 && inputs[4] == 0 && inputs[5] == 0))
 		return ;
-	write(sing_tty(), tgoto(tgetstr("cm", NULL), 0, 0),
+	write(sing_tty(0), tgoto(tgetstr("cm", NULL), 0, 0),
 		ft_strlen(tgoto(tgetstr("cm", NULL), 0, 0)));
-	write(sing_tty(), tgetstr("cd", NULL), 3);
-	write(sing_tty(), tgetstr("ve", NULL), 12);
+	write(sing_tty(0), tgetstr("cd", NULL), 3);
+	write(sing_tty(0), tgetstr("ve", NULL), 12);
 	ft_enter2(e, NULL);
 }
 

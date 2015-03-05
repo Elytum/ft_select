@@ -43,11 +43,11 @@ static int		ft_pushback(t_str **head, char *str)
 	return (p - str);
 }
 
-void			ft_loop(t_env *e)
+static void		ft_loop(t_env *e)
 {
 	char		inputs[6];
 
-	write(e->tty, tgetstr("vi", NULL), 6);
+	write(sing_tty(0), tgetstr("vi", NULL), 6);
 	ft_putselect(e);
 	ft_bzero(inputs, 6);
 	e->put = 0;

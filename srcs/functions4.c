@@ -23,16 +23,16 @@ static void	ft_put_col2(t_env *e, t_str *ptr, int max)
 	x = 0;
 	while (ptr)
 	{
-		write(sing_tty(), tgoto(tgetstr("cm", NULL), x * max, y),
+		write(sing_tty(0), tgoto(tgetstr("cm", NULL), x * max, y),
 			ft_strlen(tgoto(tgetstr("cm", NULL), x * max, y)));
 		if (ptr->flags & 0b00000001)
-			write(sing_tty(), tgetstr("us", NULL),
+			write(sing_tty(0), tgetstr("us", NULL),
 				ft_strlen(tgetstr("us", NULL)));
 		if (ptr->flags & 0b00000010)
-			write(sing_tty(), tgetstr("mr", NULL),
+			write(sing_tty(0), tgetstr("mr", NULL),
 				ft_strlen(tgetstr("mr", NULL)));
-		write(sing_tty(), ptr->str, ft_strlen(ptr->str));
-		write(sing_tty(), tgetstr("me", NULL), ft_strlen(tgetstr("me", NULL)));
+		write(sing_tty(0), ptr->str, ft_strlen(ptr->str));
+		write(sing_tty(0), tgetstr("me", NULL), ft_strlen(tgetstr("me", NULL)));
 		y++;
 		if (y >= e->height)
 		{
@@ -59,12 +59,12 @@ void		ft_put_col(t_env *e)
 		ptr = ptr->next;
 	}
 	max += 2;
-	write(sing_tty(), tgoto(tgetstr("cm", NULL), 0, 0),
+	write(sing_tty(0), tgoto(tgetstr("cm", NULL), 0, 0),
 		ft_strlen(tgoto(tgetstr("cm", NULL), 0, 0)));
-	write(sing_tty(), tgetstr("cd", NULL), ft_strlen(tgetstr("cd", NULL)));
+	write(sing_tty(0), tgetstr("cd", NULL), ft_strlen(tgetstr("cd", NULL)));
 	if ((e->width / max) * e->height < e->maxy)
 	{
-		write (sing_tty(), "Screen size too little\n", 24);
+		write (sing_tty(0), "Screen size too little\n", 24);
 		return ;
 	}
 	ft_put_col2(e, e->lst, max);
@@ -87,7 +87,7 @@ static void	ft_putselect2(t_env *e, t_str *pos, char *b)
 	}
 	b = ft_strjoinf1(&b, tgoto(tgetstr("cm", \
 						NULL), e->x, e->y));
-	write(sing_tty(), b, ft_strlen(b));
+	write(sing_tty(0), b, ft_strlen(b));
 	free(b);
 }
 
@@ -95,7 +95,7 @@ void		ft_putselect(t_env *e)
 {
 	if (e->width <= e->maxx)
 	{
-		write(sing_tty(), "Screen size too little\n", 24);
+		write(sing_tty(0), "Screen size too little\n", 24);
 		return ;
 	}
 	if (e->height <= e->maxy)

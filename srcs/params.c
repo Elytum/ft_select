@@ -23,10 +23,12 @@ t_env					*ft_get_env(t_env **e)
 	return (save);
 }
 
-int						sing_tty(void)
+int						sing_tty(char flag)
 {
 	static int			fd = -1;
 
+	if (flag)
+		fd = -1;
 	if (fd == -1)
 		fd = open("/dev/tty", O_WRONLY);
 	return (fd);
